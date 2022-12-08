@@ -1,24 +1,23 @@
-FROM devopsinfra/docker-terragrunt:aws-azure-tf-1.3.6-tg-0.42.2
+FROM public.ecr.aws/amazonlinux/amazonlinux:latest
 
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     python3.5 \
-#     python3-pip \
-#     && \
-# apt-get clean && \
-# rm -rf /var/lib/apt/lists/*
-
-# RUN pip install --upgrade databricks-cli
 WORKDIR /Databricks
 COPY . /
 COPY ./docker/requirements.txt ./
 COPY ./.git/config ./.gitconfig
-RUN pip install --no-cache-dir --upgrade pip \
+RUN yum install -y amazon-linux-extras git
+RUN amazon-linux-extras enable python3.8
+RUN yum install -y python3.8
+RUN yum install -y wget unzip
+RUN yum -y update
+RUN python3.8 -m pip install --no-cache-dir --upgrade pip \
   && pip install --no-cache-dir -r requirements.txt
 
+RUN wget --quiet https://releases.hashicorp.com/terraform/1.3.6/terraform_1.3.6_linux_amd64.zip \
+  && unzip terraform_1.3.6_linux_amd64.zip \
+  && mv terraform /usr/bin/terraform \
+  && rm terraform_1.3.6_linux_amd64.zip
+RUN chmod +x /usr/bin/terraform 
 
-# # Project initialization:
-# RUN poetry config virtualenvs.create false \
-#   && poetry install --no-interaction --no-ansi --no-root
-
-
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
+RUN wget --quiet https://github.com/gruntwork-io/terragrunt/releases/download/v0.42.3/terragrunt_linux_amd64 \
+  && mv terragrunt_linux_amd64 /usr/bin/terragrunt
+RUN chmod +x /usr/bin/terragrunt  

@@ -1,0 +1,1 @@
+docker build -f ./docker/Dockerfile --tag dbr_platform .
