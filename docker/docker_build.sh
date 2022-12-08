@@ -1,1 +1,1 @@
-docker build -f ./docker/Dockerfile --tag dbr_platform .
+docker build --no-cache -f ./docker/Dockerfile --tag dbr_platform .
