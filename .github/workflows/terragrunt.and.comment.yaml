@@ -125,7 +125,7 @@ jobs:
           WORKSPACE_URL: ${{ secrets.WORKSPACE_URL }}
         with:
           context: .
-          file: dockerfiles/Dockerfile ## DockerFile Location.
+          file: docker/Dockerfile ## DockerFile Location.
           push: true
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
           registry: ${{ steps.login-ecr.outputs.registry }}
