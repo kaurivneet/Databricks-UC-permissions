@@ -23,4 +23,14 @@ RUN chmod +x /usr/bin/terragrunt
 
 WORKDIR /Databricks
 COPY . ./
-COPY ./.git/config /root/.gitconfig
+RUN --mount=type=secret,id=DATABRICKS_ACCOUNT_HOST \
+    --mount=type=secret,id=DATABRICKS_ACCOUNT_ID \
+    --mount=type=secret,id=DATABRICKS_ACCOUNT_USERNAME \
+    --mount=type=secret,id=DATABRICKS_ACCOUNT_PASSWORD \
+    --mount=type=secret,id=TERRAGRUNT_DIR \
+    echo "export DATABRICKS_ACCOUNT_HOST=$(cat /run/secrets/DATABRICKS_ACCOUNT_HOST)" >> $HOME/.bashrc && \
+    echo "export DATABRICKS_ACCOUNT_USERNAME=$(cat /run/secrets/DATABRICKS_ACCOUNT_USERNAME)" >> $HOME/.bashrc && \
+    echo "export DATABRICKS_ACCOUNT_PASSWORD=$(cat /run/secrets/DATABRICKS_ACCOUNT_PASSWORD)" >> $HOME/.bashrc && \
+    echo "export TERRAGRUNT_DIR=$(cat /run/secrets/TERRAGRUNT_DIR)" >> $HOME/.bashrc && \
+    echo "export DATABRICKS_ACCOUNT_ID=$(cat /run/secrets/DATABRICKS_ACCOUNT_ID)" >> $HOME/.bashrc
+CMD ["/bin/bash","./docker/entrypoint.sh"]

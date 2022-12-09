@@ -5,6 +5,7 @@ provider "registry.terraform.io/databricks/databricks" {
   version = "1.6.3"
   hashes = [
     "h1:8DQyMmIRz4h58qyVZgcY5X/niab4Zzek7n0tfCFObJk=",
+    "h1:iNqbi0PbsQevRCY1RLaORBr/Iy/KbV5fIqA5/CLhmhI=",
     "zh:05589cf487b955438ff83ef413410604cdfdade493301991e322a737adcfec28",
     "zh:2ae6d54349b73187c85b67434796773634703a531550693a8b311628a7106ed0",
     "zh:351635d389efaafab464cba680ab2e3095527ffe1184e901720614f17c3d72d1",

@@ -1,0 +1,122 @@
+#
+# GitHub Action workflow to deploy new workspace
+#
+name: Terragrunt Deploy - Unity catalog schema
+
+on:
+
+  pull_request:
+    branches:
+      - main
+    
+    types:
+      - closed
+    paths:
+      - terragrunt/**/**/account/schema/**
+      - '!terragrunt/**/**/account/schema/**.md'
+      - terragrunt/**/**/account/account.hcl
+      - terragrunt/**/**/region.hcl
+      - terragrunt/**/environment.hcl
+      - terragrunt/terragrunt.hcl
+      # - '!terragrunt/_env/**'
+  push:
+    branches-ignore:
+      - main
+    
+    paths:
+      - terragrunt/**/**/account/schema/**
+      - '!terragrunt/**/**/account/schema/**.md'
+      - terragrunt/**/**/account/account.hcl
+      - terragrunt/**/**/region.hcl
+      - terragrunt/**/environment.hcl
+      - terragrunt/terragrunt.hcl
+  # workflow_dispatch:    
+
+env:
+  PROJECT_NAME: DatabricksPlatform
+  AWS_REGION: ap-southeast-2
+  TERRAFORM_VERSION: 1.3.6
+  TERRAGRUNT_VERSION: 0.42.
+  #ENV_PATH: prod
+  MODULE_PATH: account/unity_catalog_object_schema
+  #REGION_PATH: ap-southeast-2
+  PARENT_DIR: terragrunt
+  # BACKEND_BUCKET: ${{ secrets.BACKEND_BUCKET }}
+  # BACKEND_DYNAMODB_TABLE: ${{ secrets.BACKEND_DYNAMODB_TABLE }}
+  # DEPLOY_ROLE_ARN: ${{ secrets.DEPLOY_ROLE_ARN }}
+
+
+jobs:
+  set-env-to-outputs:
+    strategy:
+      matrix:
+        env: [dev]
+        # env: [dev, test, prod, sbx]
+        region: [ap-southeast-2]
+    # environment: 
+    #   name: ${{matrix.env}}
+    runs-on: ubuntu-latest
+    outputs:
+      PROJECT_NAME: ${{ steps.setinputs.outputs.PROJECT_NAME }}
+      AWS_REGION: ${{ steps.setinputs.outputs.AWS_REGION }}
+      TERRAFORM_VERSION: ${{ steps.setinputs.outputs.TERRAFORM_VERSION }}
+      TERRAGRUNT_VERSION: ${{ steps.setinputs.outputs.TERRAGRUNT_VERSION }}
+      ENV_PATH: ${{ steps.setinputs.outputs.ENV_PATH }}
+      MODULE_PATH: ${{ steps.setinputs.outputs.MODULE_PATH }}
+      REGION_PATH: ${{ steps.setinputs.outputs.REGION_PATH }}
+      PARENT_DIR: ${{ steps.setinputs.outputs.PARENT_DIR }}
+    steps:
+      - name: Set Inputs
+        id: setinputs
+        run: |
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_OUTPUT
+          echo "AWS_REGION=$AWS_REGION" >> $GITHUB_OUTPUT
+          echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_OUTPUT
+          echo "TERRAGRUNT_VERSION=$TERRAGRUNT_VERSION" >> $GITHUB_OUTPUT
+          echo "ENV_PATH=${{ matrix.env }}" >> $GITHUB_OUTPUT
+          echo "MODULE_PATH=$MODULE_PATH" >> $GITHUB_OUTPUT
+          echo "REGION_PATH=${{ matrix.region }}" >> $GITHUB_OUTPUT
+          echo "PARENT_DIR=$PARENT_DIR" >> $GITHUB_OUTPUT
+  uc-schema-comment:
+    needs:
+      - set-env-to-outputs
+    strategy:
+      matrix:
+        # env: [dev, test, prod, sbx]
+        env: [dev]
+        region: [ap-southeast-2]
+    uses: ./.github/workflows/terragrunt.and.comment.yaml
+    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+    with:
+      PROJECT_NAME: ${{ needs.set-env-to-outputs.outputs.PROJECT_NAME }}
+      WORKING_DIR: ${{ needs.set-env-to-outputs.outputs.PARENT_DIR }}/${{ matrix.env }}/${{ matrix.region }}/${{ needs.set-env-to-outputs.outputs.MODULE_PATH }}
+      AWS_REGION: ${{ needs.set-env-to-outputs.outputs.AWS_REGION }}
+      # ENVIRONMENT: ${{ matrix.env }}
+
+
+
+  # workspace-provisioning-apply:
+  #   if: ${{ github.event_name == 'pull_request' && github.ref_name == 'dev' && github.event.pull_request.merged }}
+  #   uses: ./.github/workflows/terragrunt.and.apply.account.yaml
+  #   secrets: inherit
+  #   needs:
+  #     - set-env-to-outputs
+  #     - workspace-provisioning-comment
+  #   strategy:
+  #     matrix:
+  #       # env: [dev, test, prod, sbx]
+  #       env: [dev]
+  #       region: [ap-southeast-2]
+  #   permissions:
+  #     contents: read
+  #     id-token: write
+  #     pull-requests: write
+  #   with:
+  #     PROJECT_NAME: ${{ needs.set-env-to-outputs.outputs.PROJECT_NAME }}
+  #     WORKING_DIR: ${{ needs.set-env-to-outputs.outputs.PARENT_DIR }}/${{ matrix.env }}/${{ matrix.region }}/${{ needs.set-env-to-outputs.outputs.MODULE_PATH }}
+  #     AWS_REGION: ${{ needs.set-env-to-outputs.outputs.AWS_REGION }}
+  #     ENVIRONMENT: ${{ matrix.env }}
