@@ -109,6 +109,9 @@ jobs:
       #   with:
       #     # ssh-private-key: ${{ secrets.GITHUB_TOKEN }} 
       #     ssh-private-key: ${{ secrets.MODULES_SSH_KEY }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
