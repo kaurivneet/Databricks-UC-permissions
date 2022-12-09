@@ -86,61 +86,61 @@ jobs:
       DATABRICKS_ACCOUNT_PASSWORD: ${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}
       WORKSPACE_TOKEN: ${{ secrets.WORKSPACE_TOKEN }}
       WORKSPACE_URL: ${{ secrets.WORKSPACE_URL }}
-    steps:
-      - name: Set Branch Name
-        run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+    # steps:
+    #   - name: Set Branch Name
+    #     run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-      - name: Checkout
-        uses: actions/checkout@v2.3.4
-        with:
-          fetch-depth: '0'
+    #   - name: Checkout
+    #     uses: actions/checkout@v2.3.4
+    #     with:
+    #       fetch-depth: '0'
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-          # role-to-assume: ${{ secrets.DEPLOY_ROLE_ARN }}
-          # aws-region: ${{ inputs.AWS_REGION }}
+    #   - name: Configure AWS Credentials
+    #     uses: aws-actions/configure-aws-credentials@v1
+    #     with:
+    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #       aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+    #       # role-to-assume: ${{ secrets.DEPLOY_ROLE_ARN }}
+    #       # aws-region: ${{ inputs.AWS_REGION }}
 
-      # - name: Setup Git
-      #   uses: webfactory/ssh-agent@v0.5.4
-      #   with:
-      #     # ssh-private-key: ${{ secrets.GITHUB_TOKEN }} 
-      #     ssh-private-key: ${{ secrets.MODULES_SSH_KEY }}
+    #   # - name: Setup Git
+    #   #   uses: webfactory/ssh-agent@v0.5.4
+    #   #   with:
+    #   #     # ssh-private-key: ${{ secrets.GITHUB_TOKEN }} 
+    #   #     ssh-private-key: ${{ secrets.MODULES_SSH_KEY }}
 
-      name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+    #   name: Set up Docker Buildx
+    #     uses: docker/setup-buildx-action@v2
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v3
-        env:
-          DATABRICKS_ACCOUNT_HOST: ${{ secrets.DATABRICKS_ACCOUNT_HOST }}
-          DATABRICKS_ACCOUNT_ID: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
-          DATABRICKS_ACCOUNT_USERNAME: ${{ secrets.DATABRICKS_ACCOUNT_USERNAME }}
-          DATABRICKS_ACCOUNT_PASSWORD: ${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}
-          WORKSPACE_TOKEN: ${{ secrets.WORKSPACE_TOKEN }}
-          WORKSPACE_URL: ${{ secrets.WORKSPACE_URL }}
+    #   - name: Build and push
+    #     id: docker_build
+    #     uses: docker/build-push-action@v3
+    #     env:
+    #       DATABRICKS_ACCOUNT_HOST: ${{ secrets.DATABRICKS_ACCOUNT_HOST }}
+    #       DATABRICKS_ACCOUNT_ID: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
+    #       DATABRICKS_ACCOUNT_USERNAME: ${{ secrets.DATABRICKS_ACCOUNT_USERNAME }}
+    #       DATABRICKS_ACCOUNT_PASSWORD: ${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}
+    #       WORKSPACE_TOKEN: ${{ secrets.WORKSPACE_TOKEN }}
+    #       WORKSPACE_URL: ${{ secrets.WORKSPACE_URL }}
 
-        with:
-          context: .
-          file: dockerfiles/Dockerfile ## DockerFile Location.
-          push: true
-          tags: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
-          registry: ${{ steps.login-ecr.outputs.registry }}
-          repository: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}
-          add_git_labels: true
-          tag_with_ref: true
-          secrets: |
-            "DATABRICKS_ACCOUNT_HOST=${{ secrets.DATABRICKS_ACCOUNT_HOST }}"
-            "DATABRICKS_ACCOUNT_ID=${{ secrets.DATABRICKS_ACCOUNT_ID }}"
-            "DATABRICKS_ACCOUNT_USERNAME=${{ secrets.DATABRICKS_ACCOUNT_USERNAME }}"
-            "DATABRICKS_ACCOUNT_PASSWORD=${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}"
-            "WORKSPACE_TOKEN=${{ secrets.WORKSPACE_TOKEN }}"
-            "WORKSPACE_URL=${{ secrets.WORKSPACE_URL }} "
-            "TERRAGRUNT_DIR=${{inputs.WORKING_DIR}}"
+    #     with:
+    #       context: .
+    #       file: dockerfiles/Dockerfile ## DockerFile Location.
+    #       push: true
+    #       tags: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
+    #       registry: ${{ steps.login-ecr.outputs.registry }}
+    #       repository: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}
+    #       add_git_labels: true
+    #       tag_with_ref: true
+    #       secrets: |
+    #         "DATABRICKS_ACCOUNT_HOST=${{ secrets.DATABRICKS_ACCOUNT_HOST }}"
+    #         "DATABRICKS_ACCOUNT_ID=${{ secrets.DATABRICKS_ACCOUNT_ID }}"
+    #         "DATABRICKS_ACCOUNT_USERNAME=${{ secrets.DATABRICKS_ACCOUNT_USERNAME }}"
+    #         "DATABRICKS_ACCOUNT_PASSWORD=${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}"
+    #         "WORKSPACE_TOKEN=${{ secrets.WORKSPACE_TOKEN }}"
+    #         "WORKSPACE_URL=${{ secrets.WORKSPACE_URL }} "
+    #         "TERRAGRUNT_DIR=${{inputs.WORKING_DIR}}"
 
       # - name: Run fmt
       #   id: fmt
