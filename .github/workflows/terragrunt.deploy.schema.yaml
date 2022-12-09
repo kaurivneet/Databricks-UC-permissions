@@ -85,7 +85,7 @@ jobs:
         # env: [dev, test, prod, sbx]
         env: [dev]
         region: [ap-southeast-2]
-    uses: ./terragrunt.and.comment.yaml
+    uses: ../.github/workflows/terragrunt.and.comment.yaml
     secrets: inherit
     permissions:
       contents: read
