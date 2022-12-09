@@ -86,9 +86,9 @@ jobs:
       DATABRICKS_ACCOUNT_PASSWORD: ${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}
       WORKSPACE_TOKEN: ${{ secrets.WORKSPACE_TOKEN }}
       WORKSPACE_URL: ${{ secrets.WORKSPACE_URL }}
-    # steps:
-    #   - name: Set Branch Name
-    #     run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+    steps:
+      - name: Set Branch Name
+        run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
     #   - name: Checkout
     #     uses: actions/checkout@v2.3.4
