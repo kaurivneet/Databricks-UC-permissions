@@ -90,19 +90,19 @@ jobs:
       - name: Set Branch Name
         run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-    #   - name: Checkout
-    #     uses: actions/checkout@v2.3.4
-    #     with:
-    #       fetch-depth: '0'
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: '0'
 
-    #   - name: Configure AWS Credentials
-    #     uses: aws-actions/configure-aws-credentials@v1
-    #     with:
-    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #       aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-    #       # role-to-assume: ${{ secrets.DEPLOY_ROLE_ARN }}
-    #       # aws-region: ${{ inputs.AWS_REGION }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          # role-to-assume: ${{ secrets.DEPLOY_ROLE_ARN }}
+          # aws-region: ${{ inputs.AWS_REGION }}
 
     #   # - name: Setup Git
     #   #   uses: webfactory/ssh-agent@v0.5.4
