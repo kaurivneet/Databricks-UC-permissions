@@ -23,13 +23,13 @@ on:
     branches-ignore:
       - main
     
-    paths:
-      - terragrunt/**/**/account/schema/**
-      - '!terragrunt/**/**/account/schema/**.md'
-      - terragrunt/**/**/account/account.hcl
-      - terragrunt/**/**/region.hcl
-      - terragrunt/**/environment.hcl
-      - terragrunt/terragrunt.hcl
+    # paths:
+    #   - terragrunt/**/**/account/schema/**
+    #   - '!terragrunt/**/**/account/schema/**.md'
+    #   - terragrunt/**/**/account/account.hcl
+    #   - terragrunt/**/**/region.hcl
+    #   - terragrunt/**/environment.hcl
+    #   - terragrunt/terragrunt.hcl
   # workflow_dispatch:    
 
 env:
