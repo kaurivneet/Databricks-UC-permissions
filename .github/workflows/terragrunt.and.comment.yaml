@@ -123,24 +123,23 @@ jobs:
           DATABRICKS_ACCOUNT_PASSWORD: ${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}
           WORKSPACE_TOKEN: ${{ secrets.WORKSPACE_TOKEN }}
           WORKSPACE_URL: ${{ secrets.WORKSPACE_URL }}
-
-    #     with:
-    #       context: .
-    #       file: dockerfiles/Dockerfile ## DockerFile Location.
-    #       push: true
-    #       tags: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
-    #       registry: ${{ steps.login-ecr.outputs.registry }}
-    #       repository: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}
-    #       add_git_labels: true
-    #       tag_with_ref: true
-    #       secrets: |
-    #         "DATABRICKS_ACCOUNT_HOST=${{ secrets.DATABRICKS_ACCOUNT_HOST }}"
-    #         "DATABRICKS_ACCOUNT_ID=${{ secrets.DATABRICKS_ACCOUNT_ID }}"
-    #         "DATABRICKS_ACCOUNT_USERNAME=${{ secrets.DATABRICKS_ACCOUNT_USERNAME }}"
-    #         "DATABRICKS_ACCOUNT_PASSWORD=${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}"
-    #         "WORKSPACE_TOKEN=${{ secrets.WORKSPACE_TOKEN }}"
-    #         "WORKSPACE_URL=${{ secrets.WORKSPACE_URL }} "
-    #         "TERRAGRUNT_DIR=${{inputs.WORKING_DIR}}"
+        with:
+          context: .
+          file: dockerfiles/Dockerfile ## DockerFile Location.
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
+          registry: ${{ steps.login-ecr.outputs.registry }}
+          repository: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}
+          add_git_labels: true
+          tag_with_ref: true
+          secrets: |
+            "DATABRICKS_ACCOUNT_HOST=${{ secrets.DATABRICKS_ACCOUNT_HOST }}"
+            "DATABRICKS_ACCOUNT_ID=${{ secrets.DATABRICKS_ACCOUNT_ID }}"
+            "DATABRICKS_ACCOUNT_USERNAME=${{ secrets.DATABRICKS_ACCOUNT_USERNAME }}"
+            "DATABRICKS_ACCOUNT_PASSWORD=${{ secrets.DATABRICKS_ACCOUNT_PASSWORD }}"
+            "WORKSPACE_TOKEN=${{ secrets.WORKSPACE_TOKEN }}"
+            "WORKSPACE_URL=${{ secrets.WORKSPACE_URL }} "
+            "TERRAGRUNT_DIR=${{inputs.WORKING_DIR}}"
 
       # - name: Run fmt
       #   id: fmt
