@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-terragrunt run-all plan --terragrunt-working-dir ./terragrunt
+source $HOME/.bashrc
+terragrunt run-all plan --terragrunt-working-dir $TERRAGRUNT_DIR
