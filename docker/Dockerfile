@@ -27,10 +27,14 @@ RUN --mount=type=secret,id=DATABRICKS_ACCOUNT_HOST \
     --mount=type=secret,id=DATABRICKS_ACCOUNT_ID \
     --mount=type=secret,id=DATABRICKS_ACCOUNT_USERNAME \
     --mount=type=secret,id=DATABRICKS_ACCOUNT_PASSWORD \
+    --mount=type=secret,id=WORKSPACE_URL \
+    --mount=type=secret,id=WORKSPACE_TOKEN \
     --mount=type=secret,id=TERRAGRUNT_DIR \
     echo "export DATABRICKS_ACCOUNT_HOST=$(cat /run/secrets/DATABRICKS_ACCOUNT_HOST)" >> $HOME/.bashrc && \
     echo "export DATABRICKS_ACCOUNT_USERNAME=$(cat /run/secrets/DATABRICKS_ACCOUNT_USERNAME)" >> $HOME/.bashrc && \
     echo "export DATABRICKS_ACCOUNT_PASSWORD=$(cat /run/secrets/DATABRICKS_ACCOUNT_PASSWORD)" >> $HOME/.bashrc && \
     echo "export TERRAGRUNT_DIR=$(cat /run/secrets/TERRAGRUNT_DIR)" >> $HOME/.bashrc && \
+    echo "export WORKSPACE_TOKEN=$(cat /run/secrets/WORKSPACE_TOKEN)" >> $HOME/.bashrc && \
+    echo "export WORKSPACE_URL=$(cat /run/secrets/WORKSPACE_URL)" >> $HOME/.bashrc && \
     echo "export DATABRICKS_ACCOUNT_ID=$(cat /run/secrets/DATABRICKS_ACCOUNT_ID)" >> $HOME/.bashrc
 # CMD ["/bin/bash","./docker/entrypoint.sh"]
