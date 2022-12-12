@@ -37,4 +37,4 @@ RUN --mount=type=secret,id=DATABRICKS_ACCOUNT_HOST \
     echo "export WORKSPACE_TOKEN=$(cat /run/secrets/WORKSPACE_TOKEN)" >> $HOME/.bashrc && \
     echo "export WORKSPACE_URL=$(cat /run/secrets/WORKSPACE_URL)" >> $HOME/.bashrc && \
     echo "export DATABRICKS_ACCOUNT_ID=$(cat /run/secrets/DATABRICKS_ACCOUNT_ID)" >> $HOME/.bashrc
-# CMD ["/bin/bash","./docker/entrypoint.sh"]
+CMD ["/bin/bash","./docker/entrypoint.sh"]
