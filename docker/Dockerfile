@@ -33,4 +33,4 @@ RUN --mount=type=secret,id=DATABRICKS_ACCOUNT_HOST \
     echo "export DATABRICKS_ACCOUNT_PASSWORD=$(cat /run/secrets/DATABRICKS_ACCOUNT_PASSWORD)" >> $HOME/.bashrc && \
     echo "export TERRAGRUNT_DIR=$(cat /run/secrets/TERRAGRUNT_DIR)" >> $HOME/.bashrc && \
     echo "export DATABRICKS_ACCOUNT_ID=$(cat /run/secrets/DATABRICKS_ACCOUNT_ID)" >> $HOME/.bashrc
-CMD ["/bin/bash","./docker/entrypoint.sh"]
+# CMD ["/bin/bash","./docker/entrypoint.sh"]
