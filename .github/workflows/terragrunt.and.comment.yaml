@@ -165,8 +165,8 @@ jobs:
 
       - name: Run Plan through docker container
         id: plan
-        uses: addnab/docker-run-action@v3
-        with:
+        # uses: addnab/docker-run-action@v3
+        container:
           image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
         run: |
           terragrunt run-all plan -out terragrunt.plan -no-color --terragrunt-non-interactive --terragrunt-fetch-dependency-output-from-state --terragrunt-working-dir $GITHUB_WORKSPACE/${{ inputs.WORKING_DIR }}
